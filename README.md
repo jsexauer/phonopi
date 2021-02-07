@@ -60,3 +60,13 @@ https://wiki.videolan.org/Documentation:Modules/http_intf/#VLC_2.0.0_and_later
 
 ### Samba
 https://www.raspberrypi.org/forums/viewtopic.php?t=214546
+
+### Run at startup
+Edit /etc/rc.local
+
+```
+sudo sh -c 'cd /home/pi/projects/phonopi && python3 -m phonopi &'
+```
+
+Headless startup:
+https://stackoverflow.com/questions/9699992/how-to-start-linux-with-gui-without-monitor

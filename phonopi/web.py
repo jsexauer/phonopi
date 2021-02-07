@@ -38,7 +38,7 @@ class PhonoWebApp:
         </ul>
         <h3>MP3</h3>
         <ul>
-            <li><a href="http://phonopi:7777/phono">MP3 Control</a> -- password: 1238  (no username)</li>
+            <li><a href="http://phonopi:7777">MP3 Control</a> -- password: 1238  (no username)</li>
         </ul>
         
         
