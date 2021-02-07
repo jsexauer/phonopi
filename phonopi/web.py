@@ -54,13 +54,13 @@ class PhonoWebApp:
             result += f"""<tr>
                 <td>{fn}</td>
                 <td><form action="/butt/manage_recordings/rename" method="POST">
-                <input type="hidden" value="{fn}" name="fn" />
-                    <input type="text" name="new_name" />
-                    <input type="submit" />
+                <input type="hidden" value="{fn}" name="fn" ></input>
+                    <input type="text" name="new_name" ></input>
+                    <input type="submit" ></input>
                 </form></td>
                 <td><form action="/butt/manage_recordings/del" method="POST">
-                    <input type="hidden" value="{fn}" name="fn" />
-                    <input type="submit" value="Delete />
+                    <input type="hidden" value="{fn}" name="fn" ></input>
+                    <input type="submit" value="Delete ></input>
                 </form></td>
             </tr>"""
         return result
