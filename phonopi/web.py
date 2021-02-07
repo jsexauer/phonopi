@@ -1,3 +1,5 @@
+import shlex
+from subprocess import Popen
 from flask import Flask, request
 
 from phonopi.services.butt import ButtService
@@ -18,19 +20,27 @@ class PhonoWebApp:
         self.butt = ButtService()
         self.butt.start_butt()
 
+        self.vlc_process = Popen(shlex.split("cvlc --http-port 7777 --http-password 1238"))
+
     def home(self):
         butt = self.butt.status
         return f"""
         <h1>PhonoPi</h1>
+        <h3>Vinyl</h3>
         <ul>
+            <li><a href="http://phonopi:8000/phono">Listen to vinyl!</a></li>
             <li><a href="/butt/toggle_recording">
                 {'Stop ' if butt.recording else 'Start '} recording vinyl to mp3
             </a></li>
             <li><a href="/butt/manage_recordings">
                 Manage Recordings
             </a></li>
-
         </ul>
+        <h3>MP3</h3>
+        <ul>
+            <li><a href="http://phonopi:7777/phono">MP3 Control</a> -- password: 1238  (no username)</li>
+        </ul>
+        
         
         <h2>Status</h2>
         <h3>Butt</h3>
