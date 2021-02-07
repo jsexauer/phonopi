@@ -5,8 +5,10 @@ This is the tool that sends the phonograph input to IceCast so that you can stre
 internet radio station.
 """
 import os
+import shlex
 import shutil
 from pathlib import Path
+from subprocess import Popen
 
 class ButtStatus:
     def __init__(self, raw_status):
@@ -40,7 +42,9 @@ class ButtService(object):
     """
 
     def __init__(self):
-        self.port = 7701
+        self._butt_cmd = 'butt'
+        self._port = 7701
+        self._butt_proc = None
         self.temp_recordings_path = Path('/home/pi/phono_recordings')
         self.permanent_recordings_path = Path('/home/pi/Music/vinyl')
 
@@ -48,7 +52,8 @@ class ButtService(object):
     def start_butt(self):
         if self.status.alive:
             return # don't try to butt again
-        self._call('&') # start as a background task
+
+        self._butt_proc = Popen(shlex.split(f"{self._butt_cmd} -p {self._port}"))
 
     @property
     def status(self):
@@ -58,6 +63,7 @@ class ButtService(object):
         """Connect and start streaming"""
         if self.status or self.status:
             return # Don't try to connect multiple times
+
 
         self._call('-s')
 
@@ -77,9 +83,6 @@ class ButtService(object):
             return
         self._call('-t')
 
-    def _call(self, command):
-        return os.popen(f'butt -p {self.port} ' + command).read()
-
     def list_recordings(self):
         for f in self.temp_recordings_path.glob("*.mp3"):
             yield f.name
@@ -93,3 +96,6 @@ class ButtService(object):
 
     def delete_recording(self, fn: str):
         (self.temp_recordings_path / fn).unlink()
+
+    def _call(self, command):
+        return os.popen(f'{self._butt_cmd} -p {self._port} ' + command).read()
