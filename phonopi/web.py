@@ -11,8 +11,8 @@ class PhonoWebApp:
         self.app.route('/')(self.home)
         self.app.route('/butt/toggle_recording')(self.toggle_recording)
         self.app.route('/butt/manage_recordings')(self.manage_recordings)
-        self.app.route('/butt/manage_recordings/rename')(self.manage_recordings_rename, methods=['POST'])
-        self.app.route('/butt/manage_recordings/del')(self.manage_recordings_del, methods=['POST'])
+        self.app.route('/butt/manage_recordings/rename', methods=['POST'])(self.manage_recordings_rename)
+        self.app.route('/butt/manage_recordings/del', methods=['POST'])(self.manage_recordings_del)
 
         # Setup services
         self.butt = ButtService()
