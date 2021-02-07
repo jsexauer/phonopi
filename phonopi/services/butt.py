@@ -5,6 +5,7 @@ This is the tool that sends the phonograph input to IceCast so that you can stre
 internet radio station.
 """
 import os
+import shutil
 from pathlib import Path
 
 class ButtStatus:
@@ -40,10 +41,13 @@ class ButtService(object):
 
     def __init__(self):
         self.port = 7701
-        self.recordings_path = Path('/home/pi/phono_recordings')
+        self.temp_recordings_path = Path('/home/pi/phono_recordings')
+        self.permanent_recordings_path = Path('/home/pi/Music/vinyl')
 
 
     def start_butt(self):
+        if self.status.alive:
+            return # don't try to butt again
         self._call('&') # start as a background task
 
     @property
@@ -77,6 +81,15 @@ class ButtService(object):
         return os.popen(f'butt -p {self.port} ' + command).read()
 
     def list_recordings(self):
-        for f in self.recordings_path.glob("*.mp3"):
+        for f in self.temp_recordings_path.glob("*.mp3"):
             yield f.name
 
+    def rename_recording(self, orig_fn: str, new_fn: str):
+        """Rename recording and move to permanent home"""
+        if not new_fn.lower().endswith('.mp3'):
+            new_fn += ".mp3"
+
+        shutil.move(self.temp_recordings_path / orig_fn, self.permanent_recordings_path / new_fn)
+
+    def delete_recording(self, fn: str):
+        (self.temp_recordings_path / fn).unlink()
