@@ -51,7 +51,7 @@ class PhonoWebApp:
         result = "<table border=0>"
         result += "<tr><th>Recording</th><th>Rename</th><th>Delete</th></tr>"
         for fn in self.butt.list_recordings():
-            result += """<tr>
+            result += f"""<tr>
                 <td>{fn}</td>
                 <td><form action="/butt/manage_recordings/rename" method="POST">
                 <input type="hidden" value="{fn}" name="fn" />
@@ -63,6 +63,7 @@ class PhonoWebApp:
                     <input type="submit" value="Delete />
                 </form></td>
             </tr>"""
+        return result
 
     def manage_recordings_rename(self):
         self.butt.rename_recording(request.form.get('fn'), request.form.get('new_name'))
