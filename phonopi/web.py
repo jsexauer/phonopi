@@ -16,7 +16,7 @@ class PhonoWebApp:
 
         # Setup services
         self.butt = ButtService()
-        #self.butt.start_butt()
+        self.butt.start_butt()
 
     def home(self):
         butt = self.butt.status
