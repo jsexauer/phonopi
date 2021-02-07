@@ -60,7 +60,7 @@ class PhonoWebApp:
                 </form></td>
                 <td><form action="/butt/manage_recordings/del" method="POST">
                     <input type="hidden" value="{fn}" name="fn" ></input>
-                    <input type="submit" value="Delete ></input>
+                    <input type="submit" value="Delete" ></input>
                 </form></td>
             </tr>"""
         return result
