@@ -70,3 +70,7 @@ sudo sh -c 'cd /home/pi/projects/phonopi && python3 -m phonopi &'
 
 Headless startup:
 https://stackoverflow.com/questions/9699992/how-to-start-linux-with-gui-without-monitor
+
+vncserver :42
+export DISPLAY=:42
+butt -p 7701
