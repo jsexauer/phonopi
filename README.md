@@ -5,6 +5,7 @@ Raspberry PI project to integrate record player, Spotify, and MP3 collection int
 - web page to show status of Butt, IceCast, etc..
 - start/stop recordings from record
 - see if nice app in iOS
+- start butt and vlc as daemons
 - setup music
 - backup image
   - https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=247568
@@ -67,6 +68,9 @@ Edit /etc/default/raspotify to give a cool name and icon, etc..
 sudo service raspotify restart
 
 ### VLC
+1. Open VLC.
+1. Set library and playlist.
+1. Tools > Preferences > All radio button > Interface > Main Interfaces.  Enable Web.
 ```
 cvlc --http-port 7777 --http-password 1238 
 ```
@@ -78,8 +82,21 @@ https://www.raspberrypi.org/forums/viewtopic.php?t=214546
 
 
 ### Run at startup
-Edit /etc/rc.local
+Install authbind to allow running on port 80 as normal user
+```
+sudo apt-get install authbind
+sudo touch /etc/authbind/byport/80
+sudo chmod 777 /etc/authbind/byport/80
+```
+
+Edit /etc/rc.local placing this line above exit 0 (the ampersand is important)
 
 ```
-sudo python3 /home/pi/projects/phonopi/run_phonopi.py &
+runuser -l pi -c 'authbind --deep python3 /home/pi/projects/phonopi/run_phonopi.py &'
+```
+
+To kill at after startup:
+```
+ps aux | grep python3
+kill 
 ```
