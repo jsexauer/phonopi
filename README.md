@@ -49,6 +49,12 @@ Installed to: \usr\local\bin\butt
 1. Record tab, change record directory to: /home/pi/phono_recordings
 1. Back on Main tab, save.
 
+In order to run it headless, use xvfb:
+```
+sudo apt-get install xvfb
+xvfb-run -a butt
+```
+
 ### Spotify Connect with Raspotify
 https://github.com/dtcooper/raspotify
 
@@ -75,12 +81,5 @@ https://www.raspberrypi.org/forums/viewtopic.php?t=214546
 Edit /etc/rc.local
 
 ```
-sudo sh -c 'cd /home/pi/projects/phonopi && python3 -m phonopi &'
+sudo python3 /home/pi/projects/phonopi/run_phonopi.py &
 ```
-
-Headless startup:
-https://stackoverflow.com/questions/9699992/how-to-start-linux-with-gui-without-monitor
-
-vncserver :42
-export DISPLAY=:42
-butt -p 7701
