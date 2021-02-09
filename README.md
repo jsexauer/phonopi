@@ -49,6 +49,7 @@ curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
 ```
 
 Edit /etc/default/raspotify to give a cool name and icon, etc..
+
 sudo service raspotify restart
 
 ### VLC
