@@ -41,6 +41,14 @@ sudo make install
 
 Installed to: \usr\local\bin\butt
 
+1. Start butt
+1. Settings.  Add server (phonopi at 8000, using stream password.  phono mountpoint)
+1. Add a stream info.  Be sure to check make it public checkbox.
+1. Audio tab, choose C-Media sound card.  Streaming via OGG/VORBIS.  192k bitrate.  Recording Mp3 (default).  Signal present/absent at -48 dB
+1. Streaming tab, start if signal present for 1 second, stop if absent for 15 seconds.
+1. Record tab, change record directory to: /home/pi/phono_recordings
+1. Back on Main tab, save.
+
 ### Spotify Connect with Raspotify
 https://github.com/dtcooper/raspotify
 
