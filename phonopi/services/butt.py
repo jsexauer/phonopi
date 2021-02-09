@@ -55,7 +55,7 @@ class ButtService(object):
 
         # Run butt headlessly
         # https://askubuntu.com/questions/50599/how-do-you-run-a-gui-application-without-gui-gui-application-as-daemon-on-headl
-        self._butt_proc = Popen(shlex.split(f"xvfb-run -a {self._butt_cmd} -p {self._port}"))
+        self._butt_proc = Popen(shlex.split(f"xvfb-run -a {self._butt_cmd} -p {self._port} -c /home/pi/.buttrc"))
 
     @property
     def status(self):
