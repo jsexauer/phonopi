@@ -18,7 +18,7 @@ Raspberry PI project to integrate record player, Spotify, and MP3 collection int
 Install icecast: https://icecast.org/docs/
 Hosted on port 8000
 ```
-sudo apt-get instal icecast2
+sudo apt-get install icecast2
 ```
 
 ### Butt
