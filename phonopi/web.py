@@ -1,13 +1,13 @@
 import shlex
 from subprocess import Popen
-from flask import Flask, request
+from flask import Flask, request, render_template
 
 from phonopi.services.butt import ButtService
 
 
 class PhonoWebApp:
 
-    def __init__(self):
+    def __init__(self, run_services=True):
         # Setup flask app
         self.app = Flask(__name__)
         self.app.route('/')(self.home)
@@ -17,37 +17,16 @@ class PhonoWebApp:
         self.app.route('/butt/manage_recordings/del', methods=['POST'])(self.manage_recordings_del)
 
         # Setup services
-        self.butt = ButtService()
-        self.butt.start_butt()
+        self.butt = ButtService(mock=not run_services)
 
-        self.vlc_process = Popen(shlex.split("cvlc --http-port 7777 --http-password 1238"))
+        if run_services:
+            self.butt.start_butt()
+
+            self.vlc_process = Popen(shlex.split("cvlc --http-port 7777 --http-password 1238"))
 
     def home(self):
         butt = self.butt.status
-        return f"""
-        <h1>PhonoPi</h1>
-        <h3>Vinyl</h3>
-        <ul>
-            <li><a href="http://phonopi:8000/phono">Listen to vinyl!</a></li>
-            <li><a href="/butt/toggle_recording">
-                {'Stop ' if butt.recording else 'Start '} recording vinyl to mp3
-            </a></li>
-            <li><a href="/butt/manage_recordings">
-                Manage Recordings
-            </a></li>
-        </ul>
-        <h3>MP3</h3>
-        <ul>
-            <li><a href="http://phonopi:7777">MP3 Control</a> -- password: 1238  (no username)</li>
-        </ul>
-        
-        
-        <h2>Status</h2>
-        <h3>Butt</h3>
-        Alive: {butt.alive} <br/>
-        Streaming: {butt.connected} <br/>
-        Recording: {butt.recording} <br/>
-        """
+        return render_template('index.html', butt=butt)
 
     def toggle_recording(self):
         if self.butt.status.recording:

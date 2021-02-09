@@ -41,10 +41,11 @@ class ButtService(object):
     https://danielnoethen.de/butt/manual.html#_command_line_control
     """
 
-    def __init__(self):
+    def __init__(self, mock=False):
         self._butt_cmd = 'butt'
         self._port = 7701
         self._butt_proc = None
+        self._mock = mock
         self.temp_recordings_path = Path('/home/pi/phono_recordings')
         self.permanent_recordings_path = Path('/home/pi/Music/vinyl')
 
@@ -59,6 +60,9 @@ class ButtService(object):
 
     @property
     def status(self):
+        if self._mock:
+            # When running in no services mode
+            return ButtStatus("No butt instance")
         return ButtStatus(self._call('-S'))
 
     def connect(self):

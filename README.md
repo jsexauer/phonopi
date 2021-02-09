@@ -98,5 +98,5 @@ runuser -l pi -c 'authbind --deep python3 /home/pi/projects/phonopi/run_phonopi.
 To kill at after startup:
 ```
 ps aux | grep python3
-kill 
+kill <pid>
 ```
