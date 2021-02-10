@@ -179,7 +179,7 @@ function checkPhonoPlayer(){
     if (state === 2){
         // Initial loading
         setTimeout(checkPhonoPlayer, 250);
-        document.getElementById('phono_stream_container').style.display = 'none';
+        document.getElementById('phono_stream_container').style.display = 'block';
         document.getElementById('no_stream').style.display = 'none';
         $("#phono_connecting").show();
         return;
