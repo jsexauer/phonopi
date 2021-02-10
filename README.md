@@ -99,4 +99,6 @@ To kill at after startup:
 ```
 ps aux | grep python3
 kill <pid>
+ps aux | grep butt
+kill <pid>
 ```
