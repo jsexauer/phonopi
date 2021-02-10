@@ -30,6 +30,14 @@
                         </video>
                         </p>
                     </div>
+                    <div class="alert alert-warning" role="alert" style="display: none;" id="no_stream">
+                        <h4 style="text-align: center;">No Stream</h4>
+                        <p>
+                            The record player does not seem to be streaming right now.  Please make sure
+                            that the record player and amp are on, the volume is up above 3, and the
+                            headphone cable is plugged in.
+                        </p>
+                    </div>
                 </div>
 
                 <a class="btn btn-primary" href="http://phonopi:8000/phono" role="button">Listen to vinyl!</a>
@@ -109,9 +117,6 @@
 var videoElem = document.getElementById('phono_stream_player');
 
 function checkPhonoPlayer(){
-    console.log("checking...");
-
-
     if (!('networkState' in videoElem)) {
         return;
     }
@@ -121,7 +126,9 @@ function checkPhonoPlayer(){
     if (state === 1){
         // Loaded
         document.getElementById('phono_stream_container').style.display = 'block';
-        //videoElem.style.display = '';
+        document.getElementById('no_stream').style.display = 'none';
+
+        return;
     }
     if (state === 2){
         // Initial loading
@@ -129,10 +136,16 @@ function checkPhonoPlayer(){
         return;
     }
     if (state === 3) {
+        // Not connected.
         console.log("off");
         document.getElementById('phono_stream_container').style.display = 'none';
+        document.getElementById('no_stream').style.display = 'block';
+
+        // Try to connect again
+        videoElem.load();
+        setTimeout(checkPhonoPlayer, 1000);
+        return;
     }
-    console.log("bye");
 }
 
 setTimeout(checkPhonoPlayer, 50);
