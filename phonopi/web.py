@@ -1,4 +1,5 @@
 import shlex
+import time
 from subprocess import Popen
 from flask import Flask, request, render_template
 
@@ -11,7 +12,7 @@ class PhonoWebApp:
         # Setup flask app
         self.app = Flask(__name__)
         self.app.route('/')(self.home)
-        self.app.route('/butt/toggle_recording')(self.toggle_recording)
+        self.app.route('/butt/recording', methods=['POST', 'GET'])(self.toggle_recording)
         self.app.route('/butt/manage_recordings')(self.manage_recordings)
         self.app.route('/butt/manage_recordings/rename', methods=['POST'])(self.manage_recordings_rename)
         self.app.route('/butt/manage_recordings/del', methods=['POST'])(self.manage_recordings_del)
@@ -29,12 +30,15 @@ class PhonoWebApp:
         return render_template('index.html', butt=butt)
 
     def toggle_recording(self):
-        if self.butt.status.recording:
-            self.butt.stop_recording()
-            return "Stopped recording..."
-        else:
-            self.butt.start_recording()
-            return "Started recording..."
+        if request.method == 'POST':
+            if self.butt.status.recording:
+                self.butt.stop_recording()
+            else:
+                self.butt.start_recording()
+            # Wait for butt to take action
+            time.sleep(0.5)
+
+        return str(self.butt.status.recording)
 
     def manage_recordings(self):
         result = "<table border=0>"
