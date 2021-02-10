@@ -21,9 +21,16 @@
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-                <video id="phono_stream_player" controls autoplay name="media" height="50" width="300">
-                    <source src="http://phonopi:8000/phono" type="audio/ogg">
-                </video>
+                <div class="d-flex justify-content-center" >
+                    <div class="bg-light rounded" style="display: none; padding: 5px;" id="phono_stream_container">
+                        <h4 style="text-align: center;">Listen</h4>
+                        <p>
+                        <video id="phono_stream_player" controls autoplay name="media" height="50" width="300">
+                            <source src="http://phonopi:8000/phono" type="audio/ogg">
+                        </video>
+                        </p>
+                    </div>
+                </div>
 
                 <a class="btn btn-primary" href="http://phonopi:8000/phono" role="button">Listen to vinyl!</a>
 
@@ -99,25 +106,36 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script>
+var videoElem = document.getElementById('phono_stream_player');
 
 function checkPhonoPlayer(){
     console.log("checking...");
-    var videoElem = document.getElementById('phono_stream_player');
+
 
     if (!('networkState' in videoElem)) {
-        console.log("geh");
         return;
     }
 
     var state = videoElem.networkState;
     console.log(state);
+    if (state === 1){
+        // Loaded
+        document.getElementById('phono_stream_container').style.display = 'block';
+        //videoElem.style.display = '';
+    }
+    if (state === 2){
+        // Initial loading
+        setTimeout(checkPhonoPlayer, 250);
+        return;
+    }
     if (state === 3) {
         console.log("off");
-        videoElem.style.display = 'none';
+        document.getElementById('phono_stream_container').style.display = 'none';
     }
     console.log("bye");
 }
-checkPhonoPlayer();
+
+setTimeout(checkPhonoPlayer, 50);
 
 </script>
 
