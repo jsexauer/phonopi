@@ -62,7 +62,9 @@ class ButtService(object):
     def status(self):
         if self._mock:
             # When running in no services mode
-            return ButtStatus("No butt instance")
+            bs = ButtStatus("No butt instance")
+            bs.connected = True
+            return bs
         return ButtStatus(self._call('-S'))
 
     def connect(self):
