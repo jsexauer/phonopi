@@ -29,7 +29,7 @@
                     </p>
                 </center>
                 <div class="d-flex justify-content-center" >
-                    <div class="bg-light rounded" style="display: none; padding: 5px;" id="phono_stream_container">
+                    <div style="display: none; padding: 5px;" id="phono_stream_container">
                         <h4 style="text-align: center;">
                             Listen</h4>
                         <p>
@@ -160,6 +160,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Handle display of phono video element
 var videoElem = document.getElementById('phono_stream_player');
+var wasStreaming = false;
 
 function checkPhonoPlayer(){
 
@@ -172,6 +173,7 @@ function checkPhonoPlayer(){
                 document.getElementById('phono_stream_container').style.display = 'none';
                 document.getElementById('no_stream').style.display = 'block';
                 $("#phono_connecting").hide();
+                wasStreaming = false;
 
                 // Recheck 1 one second
                 setTimeout(checkPhonoPlayer, 1000);
@@ -180,7 +182,13 @@ function checkPhonoPlayer(){
                 document.getElementById('phono_stream_container').style.display = 'block';
                 document.getElementById('no_stream').style.display = 'none';
                 $("#phono_connecting").hide();
-                videoElem.load();
+
+                if (!wasStreaming){
+                    // Reload
+                    videoElem.load();
+                    wasStreaming = true;
+                }
+
 
                 // Recheck every 5 seconds to make sure we're still alive.
                 setTimeout(checkPhonoPlayer, 5000);
