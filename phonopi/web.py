@@ -12,6 +12,7 @@ class PhonoWebApp:
         # Setup flask app
         self.app = Flask(__name__)
         self.app.route('/')(self.home)
+        self.app.route('/butt/streaming')(self.streaming)
         self.app.route('/butt/recording', methods=['POST', 'GET'])(self.toggle_recording)
         self.app.route('/butt/manage_recordings')(self.manage_recordings)
         self.app.route('/butt/manage_recordings/rename', methods=['POST'])(self.manage_recordings_rename)
@@ -28,6 +29,9 @@ class PhonoWebApp:
     def home(self):
         butt = self.butt.status
         return render_template('index.html', butt=butt)
+
+    def streaming(self):
+        return str(self.butt.status.connected)
 
     def toggle_recording(self):
         if request.method == 'POST':

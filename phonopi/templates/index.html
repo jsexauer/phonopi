@@ -162,40 +162,30 @@
 var videoElem = document.getElementById('phono_stream_player');
 
 function checkPhonoPlayer(){
-    if (!('networkState' in videoElem)) {
-        return;
-    }
 
-    var state = videoElem.networkState;
-    console.log(state);
-    if (state === 1){
-        // Loaded
-        document.getElementById('phono_stream_container').style.display = 'block';
-        document.getElementById('no_stream').style.display = 'none';
-        $("#phono_connecting").hide();
+    $.ajax({
+        url: '/butt/streaming',
+        success: function(data){
+            console.log(`Streaming: ${data}`);
+            if (data == "False"){
+                // Not streaming
+                document.getElementById('phono_stream_container').style.display = 'none';
+                document.getElementById('no_stream').style.display = 'block';
+                $("#phono_connecting").hide();
 
-        return;
-    }
-    if (state === 2){
-        // Initial loading
-        setTimeout(checkPhonoPlayer, 250);
-        document.getElementById('phono_stream_container').style.display = 'block';
-        document.getElementById('no_stream').style.display = 'none';
-        $("#phono_connecting").show();
-        return;
-    }
-    if (state === 3) {
-        // Not connected.
-        console.log("off");
-        document.getElementById('phono_stream_container').style.display = 'none';
-        document.getElementById('no_stream').style.display = 'block';
-        $("#phono_connecting").hide();
+                // Recheck 1 one second
+                setTimeout(checkPhonoPlayer, 1000);
+            }else{
+                // Stream active
+                document.getElementById('phono_stream_container').style.display = 'block';
+                document.getElementById('no_stream').style.display = 'none';
+                $("#phono_connecting").hide();
 
-        // Try to connect again
-        videoElem.load();
-        setTimeout(checkPhonoPlayer, 1000);
-        return;
-    }
+                // Recheck every 5 seconds to make sure we're still alive.
+                setTimeout(checkPhonoPlayer, 5000);
+            }
+        }
+    });
 }
 
 setTimeout(checkPhonoPlayer, 50);
