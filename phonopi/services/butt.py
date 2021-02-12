@@ -9,6 +9,8 @@ import shlex
 import shutil
 from pathlib import Path
 from subprocess import Popen
+from threading import Lock
+
 
 class ButtStatus:
     def __init__(self, raw_status):
@@ -47,6 +49,7 @@ class ButtService(object):
         self._butt_proc = None
         self.temp_recordings_path = Path('/home/pi/phono_recordings')
         self.permanent_recordings_path = Path('/home/pi/Music/vinyl')
+        self._butt_cmd_lock = Lock()
 
 
     def start_butt(self):
@@ -60,6 +63,7 @@ class ButtService(object):
     @property
     def status(self):
         return ButtStatus(self._call('-S'))
+
 
     def connect(self):
         """Connect and start streaming"""
@@ -99,7 +103,8 @@ class ButtService(object):
         (self.temp_recordings_path / fn).unlink()
 
     def _call(self, command):
-        return os.popen(f'{self._butt_cmd} -p {self._port} ' + command).read()
+        with self._butt_cmd_lock:
+            return os.popen(f'{self._butt_cmd} -p {self._port} ' + command).read()
 
 
 class MockButtService(ButtService):
