@@ -49,8 +49,6 @@ class PhonoWebApp:
                 self.butt.stop_recording()
             else:
                 self.butt.start_recording()
-            # Wait for butt to take action
-            time.sleep(0.5)
 
         return str(self.butt.status.recording)
 

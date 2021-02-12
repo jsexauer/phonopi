@@ -82,12 +82,12 @@ class ButtService(object):
     def start_recording(self):
         if self.status.recording:
             return # Don't try recording when already recording
-        self._call('-r', hold_lock=2)
+        self._call('-r', hold_lock=1)
 
     def stop_recording(self):
         if not self.status.recording:
             return
-        self._call('-t', hold_lock=2)
+        self._call('-t', hold_lock=1)
 
     def list_recordings(self):
         for f in self.temp_recordings_path.glob("*.mp3"):
@@ -107,6 +107,7 @@ class ButtService(object):
         with self._butt_cmd_lock:
             result = os.popen(f'{self._butt_cmd} -p {self._port} ' + command).read()
             if hold_lock != 0:
+                # Some commands take a moment to execute.  If another command comes while it's pending, it will be lost.
                 time.sleep(hold_lock)
             return result
 
