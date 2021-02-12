@@ -33,13 +33,7 @@
                         <h4 style="text-align: center;">
                             Listen</h4>
                         <p>
-                            <!--
-                        <video id="phono_stream_player" controls name="media" playsinline>
-                            <--<source src="http://phonopi:8000/phono" type="audio/ogg">-~->
-                            <source src="http://phonopi:8000/phono.m3u" type="audio/mpeg">
-                        </video>
-                            -->
-                            <audio controls src="http://phonopi:8000/phono.m3u" type="audio/mpeg" >
+                            <audio controls src="http://phonopi:8000/phono.mp3" type="audio/mpeg" ></audio>
 
                         </p>
                         <center>
@@ -197,6 +191,10 @@ function checkPhonoPlayer(){
                 // Recheck every 5 seconds to make sure we're still alive.
                 setTimeout(checkPhonoPlayer, 5000);
             }
+        },
+        fail: function(){
+            // Try again in a little bit
+            setTimeout(checkPhonoPlayer, 222);
         }
     });
 }
