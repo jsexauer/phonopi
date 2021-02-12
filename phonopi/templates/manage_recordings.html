@@ -25,25 +25,45 @@
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-                    <table cellpadding="10">
-                        <tr><th>Recording</th><th>Rename</th><th>Delete</th></tr>
-                        {% for fn in recordings %}
-                        <tr>
-                            <td>{{fn}}</td>
-                            <td><form action="/butt/manage_recordings/rename" method="POST">
-                            <input type="hidden" value="{{fn}}" name="fn" ></input>
-                                <input type="text" name="new_name" ></input>
-                                <input type="submit" ></input>
-                            </form></td>
-                            <td><form action="/butt/manage_recordings/del" method="POST">
-                                <input type="hidden" value="{{fn}}" name="fn" ></input>
-                                <button type="submit" class="btn btn-danger">
+
+                {% for fn in recordings %}
+                <div class="container">
+                    <div class="row" style="margin-bottom: 5px;">
+                        <div class="col-8" style="font-weight:bold;">
+                            {{ fn }}
+                        </div>
+                        <div class="col-4 float-right">
+                            <form action="/butt/manage_recordings/del" method="POST">
+                                <input type="hidden" value="{{fn}}" name="fn" >
+                                <button type="submit" class="btn btn-danger float-right">
                                   <i class="bi bi-trash-fill"></i>
                                 </button>
-                            </form></td>
-                        </tr>
-                        {% endfor %}
-                    </table>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+
+                    <form action="/butt/manage_recordings/rename" method="POST">
+                        <input type="hidden" value="{{fn}}" name="fn">
+                        <div class="row" style="margin-bottom: 45px;">
+                            <div class="col-8">
+                                <input type="text" name="new_name" class="form-control"
+                                       id="new_name" placeholder="Rename">
+                            </div>
+                            <div class="col-4 mr-auto">
+                                <button type="submit" class="btn btn-primary">
+                                      Rename
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                {% endfor %}
+
 
                 <a href="/" class="btn btn-primary"><i class="bi bi-arrow-left-square"></i> &nbsp; Back</a>
 
