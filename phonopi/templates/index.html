@@ -93,7 +93,7 @@
         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <center>
-                    <a class="btn btn-primary" href="http://phonopi:7777" role="button">
+                    <a class="btn btn-primary" href="/vlc" role="button">
                         <i class="bi bi-volume-up-fill"></i> &nbsp;
                         Open MP3 Control
                     </a>
@@ -117,9 +117,9 @@
         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <strong>Spotify Enabled Device.</strong>
-                This device is discoverable by Spottify using the Spottify Connect protocol.  On your phone, simply go
-                to Settings, then Devices, then look for <code>phonopi</code>.  You should then be able to control
-                which songs are played.
+                This device is discoverable by Spottify using the Spottify Connect protocol.  On your phone, simply
+                opent he Spotify app, go to Settings, then Devices, then look for <code>phonopi</code>.
+                You should then be able to control which songs are played.
             </div>
         </div>
     </div>
@@ -141,6 +141,9 @@
                 Alive: {{ butt.alive }} <br/>
                 Streaming: {{ butt.connected }} <br/>
                 Recording: {{ butt.recording }} <br/>
+
+              <h3>VLC</h3>
+                Alive: {{ vlc }}
 
             </div>
         </div>

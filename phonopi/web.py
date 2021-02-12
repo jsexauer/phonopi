@@ -1,9 +1,10 @@
 import shlex
 import time
+import uuid
 from subprocess import Popen
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session, redirect
 
-from phonopi.services.butt import ButtService
+from phonopi.services.butt import ButtService, MockButtService
 
 
 class PhonoWebApp:
@@ -17,18 +18,27 @@ class PhonoWebApp:
         self.app.route('/butt/manage_recordings')(self.manage_recordings)
         self.app.route('/butt/manage_recordings/rename', methods=['POST'])(self.manage_recordings_rename)
         self.app.route('/butt/manage_recordings/del', methods=['POST'])(self.manage_recordings_del)
+        self.app.route('/vlc')(self.manage_vlc)
+        self.app.secret_key = str(uuid.uuid4())
 
         # Setup services
-        self.butt = ButtService(mock=not run_services)
-
         if run_services:
+            self.butt = ButtService()
             self.butt.start_butt()
 
             self.vlc_process = Popen(shlex.split("cvlc --http-port 7777 --http-password 1238"))
 
+        else:
+            self.butt = MockButtService()
+            self.vlc_process = None
+
     def home(self):
         butt = self.butt.status
-        return render_template('index.html', butt=butt)
+        if self.vlc_process is None:
+            vlc = False
+        else:
+            vlc = self.vlc_process.poll() is None
+        return render_template('index.html', butt=butt, vlc=vlc)
 
     def streaming(self):
         return str(self.butt.status.connected)
@@ -45,30 +55,21 @@ class PhonoWebApp:
         return str(self.butt.status.recording)
 
     def manage_recordings(self):
-        result = "<table border=0>"
-        result += "<tr><th>Recording</th><th>Rename</th><th>Delete</th></tr>"
-        for fn in self.butt.list_recordings():
-            result += f"""<tr>
-                <td>{fn}</td>
-                <td><form action="/butt/manage_recordings/rename" method="POST">
-                <input type="hidden" value="{fn}" name="fn" ></input>
-                    <input type="text" name="new_name" ></input>
-                    <input type="submit" ></input>
-                </form></td>
-                <td><form action="/butt/manage_recordings/del" method="POST">
-                    <input type="hidden" value="{fn}" name="fn" ></input>
-                    <input type="submit" value="Delete" ></input>
-                </form></td>
-            </tr>"""
-        return result
+        msg = session.pop('msg', None)
+        return render_template('manage_recordings.html', recordings=self.butt.list_recordings(), msg=msg)
 
     def manage_recordings_rename(self):
         self.butt.rename_recording(request.form.get('fn'), request.form.get('new_name'))
-        return "Rename successful"
+        session['msg'] = "Recording renamed and moved to music library."
+        return redirect('/butt/manage_recordings')
 
     def manage_recordings_del(self):
         self.butt.delete_recording(request.form.get('fn'))
-        return "Recording deleted"
+        session['msg'] = "Recording deleted successfully"
+        return redirect('/butt/manage_recordings')
+
+    def manage_vlc(self):
+        return render_template('manage_vlc.html')
 
 
 

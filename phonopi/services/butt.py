@@ -41,11 +41,10 @@ class ButtService(object):
     https://danielnoethen.de/butt/manual.html#_command_line_control
     """
 
-    def __init__(self, mock=False):
+    def __init__(self):
         self._butt_cmd = 'butt'
         self._port = 7701
         self._butt_proc = None
-        self._mock = mock
         self.temp_recordings_path = Path('/home/pi/phono_recordings')
         self.permanent_recordings_path = Path('/home/pi/Music/vinyl')
 
@@ -60,18 +59,12 @@ class ButtService(object):
 
     @property
     def status(self):
-        if self._mock:
-            # When running in no services mode
-            bs = ButtStatus("No butt instance")
-            bs.connected = True
-            return bs
         return ButtStatus(self._call('-S'))
 
     def connect(self):
         """Connect and start streaming"""
         if self.status or self.status:
             return # Don't try to connect multiple times
-
 
         self._call('-s')
 
@@ -107,3 +100,35 @@ class ButtService(object):
 
     def _call(self, command):
         return os.popen(f'{self._butt_cmd} -p {self._port} ' + command).read()
+
+
+class MockButtService(ButtService):
+
+    def __init__(self):
+        super().__init__()
+        self._status = ButtStatus("No butt instance")
+        self._status.connected = True
+
+        self._files = ['file1.mp3', 'file2.mp3', 'file3.mpr']
+
+    @property
+    def status(self):
+        return self._status
+
+    def list_recordings(self):
+        return self._files
+
+    def start_recording(self):
+        self._status.recording = True
+
+    def stop_recording(self):
+        self._status.recording = False
+
+    def rename_recording(self, orig_fn: str, new_fn: str):
+        self._files.remove(orig_fn)
+
+    def delete_recording(self, fn: str):
+        self._files.remove(fn)
+
+    def _call(self, command):
+        raise NotImplemented("Not in Mock")
