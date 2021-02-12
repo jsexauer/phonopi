@@ -7,6 +7,7 @@ internet radio station.
 import os
 import shlex
 import shutil
+import time
 from pathlib import Path
 from subprocess import Popen
 from threading import Lock
@@ -80,13 +81,13 @@ class ButtService(object):
 
     def start_recording(self):
         if self.status.recording:
-            return # Don't try recording when allready recording
-        self._call('-r')
+            return # Don't try recording when already recording
+        self._call('-r', hold_lock=2)
 
     def stop_recording(self):
         if not self.status.recording:
             return
-        self._call('-t')
+        self._call('-t', hold_lock=2)
 
     def list_recordings(self):
         for f in self.temp_recordings_path.glob("*.mp3"):
@@ -102,9 +103,12 @@ class ButtService(object):
     def delete_recording(self, fn: str):
         (self.temp_recordings_path / fn).unlink()
 
-    def _call(self, command):
+    def _call(self, command, hold_lock=0):
         with self._butt_cmd_lock:
-            return os.popen(f'{self._butt_cmd} -p {self._port} ' + command).read()
+            result = os.popen(f'{self._butt_cmd} -p {self._port} ' + command).read()
+            if hold_lock != 0:
+                time.sleep(hold_lock)
+            return result
 
 
 class MockButtService(ButtService):
