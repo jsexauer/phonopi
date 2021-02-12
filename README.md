@@ -65,6 +65,19 @@ curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
 
 Edit /etc/default/raspotify to give a cool name and icon, etc..
 
+Edit /usr/share/alsa/alsa.conf
+
+Replace
+```
+defaults.ctl.card 0
+defaults.pcm.card 0
+```
+with
+```
+defaults.ctl.card 1
+defaults.pcm.card 1
+```
+
 sudo service raspotify restart
 
 ### VLC
@@ -79,6 +92,25 @@ https://wiki.videolan.org/Documentation:Modules/http_intf/#VLC_2.0.0_and_later
 
 ### Samba
 https://www.raspberrypi.org/forums/viewtopic.php?t=214546
+https://docs.huihoo.com/ubuntu/9.04/internet/C/networking-shares.html
+```
+sudo apt install samba samba-common-bin smbclient cifs-utils
+sudo nano /etc/samba/smb.conf
+```
+At bottom:
+```
+[music]
+    path = /home/pi/Music
+    read only = no
+    public = yes
+    writable = yes
+    browseable = yes
+    guest ok = yes
+```
+Add a password for smb:
+```
+sudo smbpasswd -a pi
+```
 
 
 ### Run at startup
