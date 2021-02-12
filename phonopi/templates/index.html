@@ -194,7 +194,7 @@ function checkPhonoPlayer(){
                 setTimeout(checkPhonoPlayer, 5000);
             }
         },
-        fail: function(){
+        error: function(xhr,status,err){
             // Try again in a little bit
             setTimeout(checkPhonoPlayer, 222);
         }
