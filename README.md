@@ -1,17 +1,6 @@
 # phonopi
 Raspberry PI project to integrate record player, Spotify, and MP3 collection into stereo system
 
-## TODO
-- web page to show status of Butt, IceCast, etc..
-- start/stop recordings from record
-- see if nice app in iOS
-- start butt and vlc as daemons
-- setup music
-- backup image
-  - https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=247568
-  - https://www.raspberrypi.org/documentation/linux/filesystem/backup.md
-  - https://www.tomshardware.com/how-to/back-up-raspberry-pi-as-disk-image
-
 
 ## Install Steps
 
@@ -112,6 +101,14 @@ Add a password for smb:
 sudo smbpasswd -a pi
 ```
 
+### Pi Hole
+https://pi-hole.net/
+
+```
+curl -sSL https://install.pi-hole.net | bash
+sudo nano /etc/lighttpd.conf
+# Edit serve.port to use 81
+```
 
 ### Run at startup
 Install authbind to allow running on port 80 as normal user
