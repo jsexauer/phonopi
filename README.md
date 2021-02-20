@@ -112,6 +112,8 @@ sudo nano /etc/lighttpd.conf
 
 Configure it to be the DHCP server of the network.
 
+Goto http://10.205.1.1/ui/1.0.99.202617/dynamic/home.html and turn off DHCP server.
+
 
 ### Run at startup
 Install authbind to allow running on port 80 as normal user
