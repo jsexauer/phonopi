@@ -110,6 +110,9 @@ sudo nano /etc/lighttpd.conf
 # Edit serve.port to use 81
 ```
 
+Configure it to be the DHCP server of the network.
+
+
 ### Run at startup
 Install authbind to allow running on port 80 as normal user
 ```
