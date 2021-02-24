@@ -1,3 +1,4 @@
+import os
 import shlex
 import time
 import uuid
@@ -19,6 +20,8 @@ class PhonoWebApp:
         self.app.route('/butt/manage_recordings/rename', methods=['POST'])(self.manage_recordings_rename)
         self.app.route('/butt/manage_recordings/del', methods=['POST'])(self.manage_recordings_del)
         self.app.route('/vlc')(self.manage_vlc)
+        self.app.route('/piadmin/reboot')(self.admin_reboot)
+        self.app.route('/piadmin/shutdown')(self.admin_shutdown)
         self.app.secret_key = str(uuid.uuid4())
 
         # Setup services
@@ -68,6 +71,12 @@ class PhonoWebApp:
 
     def manage_vlc(self):
         return render_template('manage_vlc.html')
+
+    def admin_reboot(self):
+        os.popen(f'sudo reboot now')
+
+    def admin_shutdown(self):
+        os.popen(f'sudo shutdown now')
 
 
 
