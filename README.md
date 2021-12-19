@@ -108,6 +108,9 @@ https://pi-hole.net/
 curl -sSL https://install.pi-hole.net | bash
 sudo nano /etc/lighttpd/lighttpd.conf
 # Edit serve.port to use 81
+
+# Change password
+pihole -a -p
 ```
 
 Configure it to be the DHCP server of the network.
