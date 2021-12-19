@@ -95,6 +95,14 @@ At bottom:
     writable = yes
     browseable = yes
     guest ok = yes
+
+[hdd]
+    path = /home/pi/USB_HDD_750
+    read only = no
+    public = yes
+    writable = yes
+    browseable = yes
+    guest ok = yes
 ```
 Add a password for smb:
 ```
