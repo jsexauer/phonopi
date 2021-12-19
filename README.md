@@ -103,6 +103,7 @@ At bottom:
     writable = yes
     browseable = yes
     guest ok = yes
+    force user = pi
 ```
 Add a password for smb:
 ```
