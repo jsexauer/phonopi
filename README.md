@@ -97,7 +97,7 @@ At bottom:
     guest ok = yes
 
 [hdd]
-    path = /home/pi/USB_HDD_750
+    path = /media/pi/USB_HDD_750
     read only = no
     public = yes
     writable = yes
