@@ -104,6 +104,14 @@ At bottom:
     browseable = yes
     guest ok = yes
     force user = pi
+    
+[home]
+    path = /home/pi
+    read only = no
+    public = yes
+    writable = yes
+    browseable = yes
+    guest ok = yes
 ```
 Add a password for smb:
 ```
